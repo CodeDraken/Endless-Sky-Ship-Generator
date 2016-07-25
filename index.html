@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ship Generator</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
+	<!-- Custom Fonts -->
+	<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="icon" href="img/sparrow.png">
+</head>
+
+<body>
+
+	<!-- Top Section -->
+	<div id="topSection" class="row">
+		<div class="col-md-5">
+			<h2>Endless Sky Ship Generator </h2>
+		</div>
+
+		<div class="col-md-5">
+			<p>Just fill in the input boxes and click generate. Tooltips pop up on most boxes to guide you. Don't forget to add some weapons and outfits near the bottom. Use the <a href="http://endless-sky.github.io/ship_builder.html" target="_blank">shipbuilder</a> to create outfit positions then copy them over. Once you're finished you can copy your code or edit it on the page. There's a bunch of features including random generation, ship preset, saving custom outfits, and more. Check the bottom of the page for some more links. Thanks for using, and enjoy!</p>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<!-- Start Inputs Section -->
+		<div class="col-md-4 input-section">
+			<!-- Presets -->
+			<select name="preset-select" id="iPreset" class="preset-select" data-toggle="tooltip" data-placement="top" title="Load a preset">
+
+			</select>
+			<br>
+			<button type="button" id="loadPreset" onclick="insertPreset()" class="btn btn-primary">Insert Selected Preset</button>
+			<button type="button" id="loadPreset" onclick="savePreset()" class="btn btn-primary">Save Ship Preset</button>
+			<br>
+			<button type="button" id="loadPreset" onclick="loadPresetStorage()" class="btn btn-info">Load Saved Preset List</button>
+			<button type="button" id="loadPreset" onclick="deletePresetStorage()" class="btn btn-danger">Delete Saved Presets</button>
+
+			<!-- Ship Name & Sprite -->
+			<div class="input-group">
+				<span class="input-group-addon" >Ship Name</span>
+				<input id="iName" type="text" placeholder="Some Ship Name" data-toggle="tooltip"
+				data-placement="right" title="Any unique name">
+			</div>
+
+			<select name="disable-select" id="iDisabled" class="c-select" data-toggle="tooltip" data-placement="right" title="Can your ship be disabled or does it fight until it blows up?">
+				<option value='' selected>Can be disabled</option>
+				<option value='"never disabled"'>Never disabled</option>
+			</select>
+
+			<select name="automaton-select" id="iAutomaton" class="c-select" data-toggle="tooltip" data-placement="right" title="Can your ship have 0 crew?">
+				<option value="0" selected>Not an automaton</option>
+				<option value="1">Automaton</option>
+			</select>
+
+			<!-- Attributes -->
+
+			<select name="category-select" id="iCategory" class="c-select" data-toggle="tooltip" data-placement="right" title="Select a category">
+				<option selected>Category</option>
+				<option>Transport</option>
+				<option>Light Freighter</option>
+				<option>Heavy Freighter</option>
+				<option>Interceptor</option>
+				<option>Light Warship</option>
+				<option>Medium Warship</option>
+				<option>Heavy Warship</option>
+				<option>Fighter</option>
+				<option>Drone</option>
+			</select>
+
+			<div class="input-group">
+				<span class="input-group-addon">Cost</span>
+				<input id="iCost" type="text" placeholder="Enter credit cost" data-toggle="tooltip"
+				data-placement="right" title="The cost of the ship itself not including parts">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Shields</span>
+				<input id="iShield" type="text" placeholder="Enter a # for the shields" data-toggle="tooltip"
+				data-placement="right" title="The max shields">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Hull</span>
+				<input id="iHull" type="text" placeholder="Enter a # for the hull" data-toggle="tooltip"
+				data-placement="right" title="The max hull">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Required Crew</span>
+				<input id="iCrew" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="Crew required to fly properly">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Bunks</span>
+				<input id="iBunks" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="Max amount of crew">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Mass</span>
+				<input id="iMass" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="The more mass the more thrust needed to move | Interceptor 50 | Medium Warship 470 | Heavy WarShip 940">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Drag</span>
+				<input id="iDrag" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="the maximum speed of the ship will be equal to thrust / drag">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Heat Dissipation</span>
+				<input id="iHeat" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="how well this ship gets rid of excess heat. This should vary from .9 for tiny ships to .5 or less for large ships. For ships of a given size, it should be higher for ships with more exposed hull area or that might be expected to have higher quality construction, and lower for ships that ought to be plagued by overheating issues">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Fuel Capacity</span>
+				<input id="iFuel" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="the amount of fuel (one jump = 100) that this ship can carry">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Cargo Space</span>
+				<input id="iCargo" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="the amount of cargo that can be carried">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Outfit Space</span>
+				<input id="iOutfit" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="the amount of outfits (weapons, generators, engines, etc.) that can be installed">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Weapon Capacity</span>
+				<input id="iWeaponCap" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="the amount of outfit space that can be occupied by weapons.">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Engine Capacity</span>
+				<input id="iEngineCap" type="text" placeholder="Enter a #" data-toggle="tooltip"
+				data-placement="right" title="the amount of that outfit space which is suitable for installing engines. Some ships have lots of engine capacity but not much weapon capacity, or vice versa.">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon" data-toggle="tooltip"
+				data-placement="top" title="defines how much damage your ship does when it explodes">Explode</span>
+
+				<input id="iBlast" type="text" placeholder="Blast Radius" data-toggle="tooltip"
+				data-placement="top" title="Blast Radius (Typical value value: (shields + hull) * .01)">
+
+				<input id="iShieldDamage" type="text" placeholder="Shield Damage" data-toggle="tooltip"
+				data-placement="top" title="Shield Damage (Typical value value: (shields + hull) * .10)">
+				<br>
+				<input id="iHullDamage" type="text" placeholder="Hull Damage" data-toggle="tooltip"
+				data-placement="top" title="Hull Damage (Typical value value: (shields + hull) * .05)">
+
+				<input id="iHitForce" type="text" placeholder="Hit Force" data-toggle="tooltip"
+				data-placement="top" title="Hit Force (Typical value value: (shields + hull) * .15)">
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-addon">Description</span>
+				<input id="iDescription" type="text" placeholder="A generated ship" data-toggle="tooltip"
+				data-placement="top" title="The description for your ship">
+			</div>
+			<select name="tier-select" id="iTier" class="t-select" data-toggle="tooltip" data-placement="right" title="Select a tier. This is for random generation only. High tier not suggested for balanced use.">
+				<option selected>Tier</option>
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+				<option>6</option>
+				<option>7</option>
+				<option>8</option>
+				<option>9</option>
+				<option>10</option>
+			</select>
+			<button type="button" onclick="generate()" class="btn btn-primary">Generate</button>
+			<button type="button" onclick="randomGen()" class="btn btn-primary">Generate Random</button>
+			<button type="button" onclick="reset()" class="btn btn-danger">Reset</button>
+			<br>
+			<br>
+
+			<select name="weaponSelect" id="weaponSelect">
+				<option>Anti-Missile Turret</option>
+				<option>Beam Laser</option>
+				<option>Blaster Turret</option>
+				<option>Energy Blaster</option>
+				<option>Hai Tracker Pod</option>
+				<option>Heavy Anti-Missile Turret</option>
+				<option>Heavy Laser</option>
+				<option>Heavy Laser Turret</option>
+				<option>Heavy Rocket Launcher</option>
+				<option>Ion Cannon</option>
+				<option>Javelin Pod</option>
+				<option>Laser Turret</option>
+				<option>Meteor Missile Launcher</option>
+				<option>Modified Blaster</option>
+				<option>Modified Blaster Turret</option>
+				<option>Particle Cannon</option>
+				<option>Plasma Cannon</option>
+				<option>Proton Gun</option>
+				<option>Pulse Cannon</option>
+				<option>Pulse Turret</option>
+				<option>Quad Blaster Turret</option>
+				<option>Sidewinder Missile Launcher</option>
+				<option>Torpedo Launcher</option>
+				<option>Electron Beam</option>
+				<option>Electron Turret</option>
+				<option>Flamethrower</option>
+				<option>Korath Banisher</option>
+				<option>Korath Fire-Lance</option>
+				<option>Korath Grab-Strike</option>
+				<option>Korath Warder</option>
+				<option>Nuclear Missile</option>
+				<option>Plasma Turret</option>
+				<option>Pug Anti-Missile</option>
+				<option>Pug Seeker</option>
+				<option>Pug Zapper</option>
+				<option>Pug Zapper Turret</option>
+				<option>Quarg Anti-Missile</option>
+				<option>Quarg Skylance</option>
+				<option>Typhoon Launcher</option>
+			</select>
+			<input id="weaponAmount" type="text" placeholder="weapon amount ie 2" data-toggle="tooltip"
+			data-placement="top" title="Add multiple of one weapon by using a number">
+			<button onclick="addWeapon()" type="button" class="btn btn-success">Add Weapon</button>
+			<br>
+
+			<select name="moduleSelect" id="moduleSelect">
+				<optgroup label="Shields">
+					<option>Bright Cloud Shielding</option>
+					<option>Hai Corundum Regenerator</option>
+					<option>D14-RN Shield Generator</option>
+					<option>D23-QP Shield Generator</option>
+					<option>D41-HY Shield Generator</option>
+					<option>D67-TM Shield Generator</option>
+					<option>D94-YV Shield Generator</option>
+					<option>Dark Storm Shielding</option>
+					<option>Hai Diamond Regenerator</option>
+					<option>Korath Shield Generator</option>
+					<option>Quantum Shield Generator</option>
+					<option>S-270 Regenerator</option>
+					<option>S-970 Regenerator</option>
+				</optgroup>
+				<optgroup label="Energy Generators">
+					<option>Antimatter Core</option>
+					<option>Armageddon Core</option>
+					<option>Boulder Reactor</option>
+					<option>Breeder Reactor</option>
+					<option>Double Plasma Core</option>
+					<option>Dwarf Core</option>
+					<option>Fission Reactor</option>
+					<option>Fusion Reactor</option>
+					<option>Generator (Candle)</option>
+					<option>Generator (Furnace)</option>
+					<option>Generator (Inferno)</option>
+					<option>Geode Reactor</option>
+					<option>nGVF-AA Fuel Cell</option>
+					<option>nGVF-BB Fuel Cell</option>
+					<option>nGVF-CC Fuel Cell</option>
+					<option>nGVF-DD Fuel Cell</option>
+					<option>nGVF-EE Fuel Cell</option>
+					<option>NT-200 Nucleovoltaic</option>
+					<option>Pebble Reactor</option>
+					<option>Plasma Core</option>
+					<option>RT-I Radiothermal</option>
+					<option>S3 Thermionic</option>
+					<option>Stack Core</option>
+					<option>Korath Tek'far Reactor</option>
+					<option>Korath Tek'nel Reactor</option>
+					<option>Triple Plasma Core</option>
+				</optgroup>
+				<optgroup label="Energy Storage">
+					<option>Hai Chasm Batteries</option>
+					<option>Hai Fissure Batteries</option>
+					<option>Hai Gorge Batteries</option>
+					<option>Hai Ravine Batteries</option>
+					<option>Hai Valley Batteries</option>
+					<option>LP036a Battery Pack</option>
+					<option>LP072a Battery Pack</option>
+					<option>LP144a Battery Pack</option>
+					<option>LP288a Battery Pack</option>
+					<option>LP576a Battery Pack</option>
+					<option>Nanotech Battery</option>
+					<option>Supercapacitor</option>
+				</optgroup>
+				<optgroup label="Multipurpose">
+					<option>Systems Core (Large)</option>
+					<option>Systems Core (Medium)</option>
+					<option>Systems Core (Small)</option>
+					<option>White Sun Reactor</option>
+					<option>Yellow Sun Reactor</option>
+					<option>Small Biochemical Cell</option>
+					<option>Large Biochemical Cell</option>
+				</optgroup>
+			</select>
+			<input id="moduleAmount" type="text" placeholder="module amount ie 4" data-toggle="tooltip"
+			data-placement="top" title="Add multiple of one module by using a number">
+			<button onclick="addModule()" type="button" class="btn btn-info">Add Module</button>
+			<br>
+			
+			<select name="engineSelect" id="engineSelect">
+				<optgroup label="Steering">
+					<option>A125 Atomic Steering</option>
+					<option>A255 Atomic Steering</option>
+					<option>A375 Atomic Steering</option>
+					<option>A525 Atomic Steering</option>
+					<option>A865 Atomic Steering</option>
+					<option>Ark'parat Steering</option>
+					<option>Steering (Asteroid Class)</option>
+					<option>`"Basrem" Atomic Steering`</option>
+					<option>`"Benga" Atomic Steering`</option>
+					<option>`"Biroo" Atomic Steering`</option>
+					<option>`"Bondir" Atomic Steering`</option>
+					<option>`"Bufaer" Atomic Steering`</option>
+					<option>Chipmunk Plasma Steering</option>
+					<option>Steering (Comet Class)</option>
+					<option>Greyhound Plasma Steering</option>
+					<option>Impala Plasma Steering</option>
+					<option>Jak'parat Steering</option>
+					<option>Steering (Lunar Class)</option>
+					<option>Medium Graviton Steering</option>
+					<option>Orca Plasma Steering</option>
+					<option>Steering (Plantary Class)</option>
+					<option>Pug Akfar Steering</option>
+					<option>Pug Cormet Steering</option>
+					<option>Pug Lohmar Steering</option>
+					<option>Steering (Stellar Class)</option>
+					<option>Type 1 Radiant Steering</option>
+					<option>Type 2 Radiant Steering</option>
+					<option>Type 3 Radiant Steering</option>
+					<option>Type 4 Radiant Steering</option>
+					<option>Tyrant Plasma Steering</option>
+					<option>X1200 Ion Steering</option>
+					<option>X2200 Ion Steering</option>
+					<option>X3200 Ion Steering</option>
+					<option>X4200 Ion Steering</option>
+					<option>X5200 Ion Steering</option>
+				</optgroup>
+				<optgroup label="Thrusters">
+					<option>A120 Atomic Thruster</option>
+					<option>A250 Atomic Thruster</option>
+					<option>A370 Atomic Thruster</option>
+					<option>A520 Atomic Thruster</option>
+					<option>A860 Atomic Thruster</option>
+					<option>Ark'torbal Thruster</option>
+					<option>Thruster (Asteroid Class)</option>
+					<option>`"Basrem" Atomic Thruster`</option>
+					<option>`"Benga" Atomic Thruster`</option>
+					<option>`"Biroo" Atomic Thruster`</option>
+					<option>`"Bondir" Atomic Thruster`</option>
+					<option>`"Bufaer" Atomic Thruster`</option>
+					<option>Chipmunk Plasma Thruster</option>
+					<option>Thruster (Comet Class)</option>
+					<option>Greyhound Plasma Thruster</option>
+					<option>Impala Plasma Thruster</option>
+					<option>Ionic Afterburner</option>
+					<option>Jak'torbal Thruster</option>
+					<option>Thruster (Lunar Class)</option>
+					<option>Medium Graviton Thruster</option>
+					<option>Orca Plasma Thruster</option>
+					<option>Thruster (Planetary Class)</option>
+					<option>Pug Akfar Thruster</option>
+					<option>Pug Cormet Thruster</option>
+					<option>Pug Lohmar Thruster</option>
+					<option>Thruster (Stellar Class)</option>
+					<option>Type 1 Radiant Thruster</option>
+					<option>Type 2 Radiant Thruster</option>
+					<option>Type 3 Radiant Thruster</option>
+					<option>Type 4 Radiant Thruster</option>
+					<option>Tyrant Plasma Thruster</option>
+					<option>X1050 Ion Engine</option>
+					<option>X1700 Ion Thruster</option>
+					<option>X2700 Ion Thruster</option>
+					<option>X3700 Ion Thruster</option>
+					<option>X4700 Ion Thruster</option>
+					<option>X5700 Ion Thruster</option>
+				</optgroup>
+			</select>
+			<input id="engineAmount" type="text" placeholder="engine amount ie 3" data-toggle="tooltip"
+			data-placement="top" title="Add multiple of one engine by using a number">
+			<button onclick="addEngine()" type="button" class="btn btn-warning">Add Engine</button>
+			<br>
+
+			
+		</div> <!-- End Inputs Section 1-->
+		<!-- Inputs Section 2-->
+		<div class="col-md-3">
+
+			<label for="oPositions">Outfit Positions</label>
+			<textarea id="oPositions" rows="8" cols="50" placeholder="paste ship builder positions here. One position on each line. You don't need to worry too much about indents or extra spaces."  data-toggle="tooltip"
+			data-placement="right" title="Copy/Paste your gun/engine/turret positions from the ship builder tool"></textarea>
+			<button onclick="addPositions()" type="button" class="btn btn-info">Add Positions</button>
+			<br>
+
+			<select name="explosionSelect" id="explosionSelect">
+				<option>"tiny explosion"</option>
+				<option>"small explosion"</option>
+				<option>"medium explosion"</option>
+				<option>"big explosion"</option>
+				<option>"nuke explosion"</option>
+			</select>
+			<input id="explosionAmount" type="text" placeholder="explosion amount ie 8" data-toggle="tooltip"
+			data-placement="top" title="Add multiple of one explosion type by using a number">
+			<button onclick="addExplosion()" type="button" class="btn btn-warning">Add Explosion</button>
+			<br>
+
+			<select name="allOutfitSelect" id="allOutfitSelect" data-toggle="tooltip" data-placement="right" title="This list is a bit messy, but should have proper names. Adding outfits using this list will not sort them in the code. Suggested add order is: Weapons > Modules > Engines">
+				<optgroup id="savedOutfits" label="Saved Custom Outfits">
+				</optgroup>
+				<optgroup label="Deprecated">
+					<option>"Reverse Thruster"</option>
+					<option>"NDR-114 Android"</option>
+					<option>"Korath Tek'far Reactor"</option>
+					<option>"Korath Tek'nel Reactor"</option>
+					<option>"Korath Shield Generator"</option>
+					<option>"Korath Heat Shunt"</option>
+					<option>"Korath Ark'torbal Thruster"</option>
+					<option>"Korath Ark'parat Steering"</option>
+					<option>"Korath Jak'torbal Thruster"</option>
+					<option>"Korath Jak'parat Steering"</option>
+				</optgroup>
+				<optgroup label="Drak">
+					<option>"Drak Distancer"</option>
+					<option>"Drak Draining Field"</option>
+					<option>"Drak Anti-Missile Field"</option>
+					<option>"Drak Turret"</option>
+					<option>"Drak Antimatter Cannon"</option>
+					<option>"Drak Antimatter Fragment"</option>
+					<option>"Jump Drive"</option>
+				</optgroup>
+				<optgroup label="Hai">
+					<option>"Ion Cannon"</option>
+					<option>"Pulse Cannon"</option>
+					<option>"Pulse Turret"</option>
+					<option>"Hai Tracker"</option>
+					<option>"Hai Tracker Pod"</option>
+					<option>"Bullfrog Anti-Missile"</option>
+					<option>"Chameleon Anti-Missile"</option>
+					<option>"Hai Corundum Regenerator"</option>
+					<option>"Hai Diamond Regenerator"</option>
+					<option>"Hai Williwaw Cooling"</option>
+					<option>"Hai Chasm Batteries"</option>
+					<option>"Hai Fissure Batteries"</option>
+					<option>"Hai Gorge Batteries"</option>
+					<option>"Hai Ravine Batteries"</option>
+					<option>"Hai Valley Batteries"</option>
+					<option>"Pebble Core"</option>
+					<option>"Geode Reactor"</option>
+					<option>"Boulder Reactor"</option>
+					<option>`"Basrem" Atomic Thruster`</option>
+					<option>`"Benga" Atomic Thruster`</option>
+					<option>`"Biroo" Atomic Thruster`</option>
+					<option>`"Bondir" Atomic Thruster`</option>
+					<option>`"Bufaer" Atomic Thruster`</option>
+					<option>`"Basrem" Atomic Steering`</option>
+					<option>`"Benga" Atomic Steering`</option>
+					<option>`"Biroo" Atomic Steering`</option>
+					<option>`"Bondir" Atomic Steering`</option>
+					<option>`"Bufaer" Atomic Steering`</option>
+				</optgroup>
+				<optgroup label="Human">
+					<option>"Energy Blaster"</option>
+					<option>"X1050 Ion Engines"</option>
+					<option>"X1700 Ion Thruster"</option>
+					<option>"X1200 Ion Steering"</option>
+					<option>"X2700 Ion Thruster"</option>
+					<option>"X2200 Ion Steering"</option>
+					<option>"X3700 Ion Thruster"</option>
+					<option>"X3200 Ion Steering"</option>
+					<option>"X4700 Ion Thruster"</option>
+					<option>"X4200 Ion Steering"</option>
+					<option>"X5700 Ion Thruster"</option>
+					<option>"X5200 Ion Steering"</option>
+					<option>"A120 Atomic Thruster"</option>
+					<option>"A125 Atomic Steering"</option>
+					<option>"A250 Atomic Thruster"</option>
+					<option>"A255 Atomic Steering"</option>
+					<option>"A370 Atomic Thruster"</option>
+					<option>"A375 Atomic Steering"</option>
+					<option>"A520 Atomic Thruster"</option>
+					<option>"A525 Atomic Steering"</option>
+					<option>"A860 Atomic Thruster"</option>
+					<option>"A865 Atomic Steering"</option>
+					<option>"Chipmunk Plasma Thruster"</option>
+					<option>"Chipmunk Plasma Steering"</option>
+					<option>"Greyhound Plasma Thruster"</option>
+					<option>"Greyhound Plasma Steering"</option>
+					<option>"Impala Plasma Thruster"</option>
+					<option>"Impala Plasma Steering"</option>
+					<option>"Orca Plasma Thruster"</option>
+					<option>"Orca Plasma Steering"</option>
+					<option>"Tyrant Plasma Thruster"</option>
+					<option>"Tyrant Plasma Steering"</option>
+					<option>"AR120 Reverse Thruster"</option>
+					<option>"LP036a Battery Pack"</option>
+					<option>"LP072a Battery Pack"</option>
+					<option>"LP144a Battery Pack"</option>
+					<option>"LP288a Battery Pack"</option>
+					<option>"LP576a Battery Pack"</option>
+					<option>"KP-6 Photovoltaic Panel"</option>
+					<option>"KP-6 Photovoltaic Array"</option>
+					<option>"nGVF-AA Fuel Cell"</option>
+					<option>"nGVF-BB Fuel Cell"</option>
+					<option>"nGVF-CC Fuel Cell"</option>
+					<option>"nGVF-DD Fuel Cell"</option>
+					<option>"nGVF-EE Fuel Cell"</option>
+					<option>"NT-200 Nucleovoltaic"</option>
+					<option>"RT-I Radiothermal"</option>
+					<option>"S3 Thermionic"</option>
+					<option>"Fusion Reactor"</option>
+					<option>"Armageddon Core"</option>
+					<option>"Stack Core"</option>
+					<option>"Dwarf Core"</option>
+					<option>"Breeder Reactor"</option>
+					<option>"Fission Reactor"</option>
+					<option>"Cooling Ducts"</option>
+					<option>"Water Coolant System"</option>
+					<option>"Liquid Nitrogen Cooler"</option>
+					<option>"Liquid Helium Cooler"</option>
+					<option>"D14-RN Shield Generator"</option>
+					<option>"D23-QP Shield Generator"</option>
+					<option>"D41-HY Shield Generator"</option>
+					<option>"D67-TM Shield Generator"</option>
+					<option>"D94-YV Shield Generator"</option>
+					<option>"Anti-Missile Turret"</option>
+					<option>"Heavy Anti-Missile Turret"</option>
+					<option>"Meteor Missile"</option>
+					<option>"Torpedo"</option>
+					<option>"Sidewinder Missile"</option>
+					<option>"Javelin"</option>
+					<option>"Heavy Rocket"</option>
+					<option>"Cargo Scanner"</option>
+					<option>"Small Radar Jammer"</option>
+					<option>"Large Radar Jammer"</option>
+					<option>"Blaster Turret"</option>
+					<option>"Meteor Missile Launcher"</option>
+					<option>"Sidewinder Missile Launcher"</option>
+					<option>"Javelin Pod"</option>
+					<option>"Heavy Rocket Launcher"</option>
+					<option>"Torpedo Launcher"</option>
+					<option>"Beam Laser"</option>
+					<option>"Small Bunk Room"</option>
+					<option>"Bunk Room"</option>
+					<option>Afterburner</option>
+					<option>"Outfit Scanner"</option>
+					<option>Supercapacitor</option>
+					<option>"Pilot's License"</option>
+					<option>"Security Station"</option>
+					<option>"Laser Rifle"</option>
+					<option>Ramscoop</option>
+					<option>"Laser Turret"</option>
+					<option>"Heavy Laser"</option>
+					<option>"Heavy Laser Turret"</option>
+					<option>"Particle Cannon"</option>
+					<option>"Proton Gun"</option>
+					<option>"Modified Blaster"</option>
+					<option>"Modified Blaster Turret"</option>
+					<option>"Quad Blaster Turret"</option>
+					<option>"Plasma Cannon"</option>
+					<option>"Fragmentation Grenades"</option>
+					<option>"Nerve Gas"</option>
+					<option>"Interference Plating"</option>
+					<option>"Nuclear Missile"</option>
+					<option>"Catalytic Ramscoop"</option>
+					<option>"Plasma Turret"</option>
+					<option>"Typhoon Launcher"</option>
+					<option>"Typhoon Torpedo"</option>
+					<option>"Ionic Afterburner"</option>
+					<option>Flamethrower</option>
+					<option>"S-270 Regenerator"</option>
+					<option>"S-970 Regenerator"</option>
+					<option>"Cloaking Device"</option>
+					<option>"Electron Beam"</option>
+					<option>"Electron Turret"</option>
+				</optgroup>
+				<optgroup label="Pug">
+					<option>"Pug Zapper"</option>
+					<option>"Pug Zapper Turret"</option>
+					<option>"Pug Seeker"</option>
+					<option>"Pug Anti-Missile"</option>
+					<option>"Pug Akfar Thruster"</option>
+					<option>"Pug Akfar Steering"</option>
+					<option>"Pug Cormet Thruster"</option>
+					<option>"Pug Cormet Steering"</option>
+					<option>"Pug Lohmar Thruster"</option>
+					<option>"Pug Lohmar Steering"</option>
+					<option>"Pug Biodefenses"</option>
+					<option>"Jump Drive"</option>
+					<option>"Tier 3 Anti-Missile"</option>
+					<option>"Pug Gridfire Turret"</option>
+					<option>"Cloaking Device"</option>
+				</optgroup>
+				<optgroup label="Korath">
+					<option>"Generator (Candle Class)"</option>
+					<option>"Generator (Furnace Class)"</option>
+					<option>"Generator (Inferno Class)"</option>
+					<option>"Small Heat Shunt"</option>
+					<option>"Large Heat Shunt"</option>
+					<option>"Thruster (Asteroid Class)"</option>
+					<option>"Thruster (Comet Class)"</option>
+					<option>"Thruster (Lunar Class)"</option>
+					<option>"Thruster (Planetary Class)"</option>
+					<option>"Thruster (Stellar Class)"</option>
+					<option>"Steering (Asteroid Class)"</option>
+					<option>"Steering (Comet Class)"</option>
+					<option>"Steering (Lunar Class)"</option>
+					<option>"Steering (Planetary Class)"</option>
+					<option>"Steering (Stellar Class)"</option>
+					<option>"Korath Repeater"</option>
+					<option>"Korath Repeater Turret"</option>
+					<option>"Systems Core (Small)"</option>
+					<option>"Systems Core (Medium)"</option>
+					<option>"Systems Core (Large)"</option>
+					<option>"Plasma Core"</option>
+					<option>"Double Plasma Core"</option>
+					<option>"Triple Plasma Core"</option>
+					<option>"Korath Piercer"</option>
+					<option>"Korath Piercer Launcher"</option>
+					<option>"Korath Detainer"</option>
+					<option>"Korath Grab-Strike"</option>
+					<option>"Korath Fire-Lance"</option>
+					<option>"Korath Warder"</option>
+					<option>"Korath Banisher"</option>
+					<option>"Korath Minelayer"</option>
+					<option>"Korath Mine"</option>
+					<option>"Korath Disruptor"</option>
+					<option>"Korath Slicer"</option>
+					<option>"Korath Slicer Turret"</option>
+				</optgroup>
+				<optgroup label="Quarg">
+					<option>"Nanotech Battery"</option>
+					<option>"Antimatter Core"</option>
+					<option>"Quarg Skylance"</option>
+					<option>"Quarg Anti-Missle"</option>
+					<option>"Intrusion Countermeasures"</option>
+					<option>"Medium Graviton Thruster"</option>
+					<option>"Medium Graviton Steering"</option>
+					<option>"Quantum Shield Generator"</option>
+					<option>"Jump Drive"</option>
+				</optgroup>
+				<optgroup label="Wanderer">
+					<option>Sunbeam</option>
+					<option>"Sunbeam Turret"</option>
+					<option>"Dual Sunbeam Turret"</option>
+					<option>"Wanderer Anti-Missile"</option>
+					<option>"Thunderhead Missile"</option>
+					<option>"Thunderhead Launcher"</option>
+					<option>Thunderhead</option>
+					<option>"Small Biochemical Cell"</option>
+					<option>"Large Biochemical Cell"</option>
+					<option>"Yellow Sun Reactor"</option>
+					<option>"White Sun Reactor"</option>
+					<option>"Type 1 Radiant Thruster"</option>
+					<option>"Type 2 Radiant Thruster"</option>
+					<option>"Type 3 Radiant Thruster"</option>
+					<option>"Type 4 Radiant Thruster"</option>
+					<option>"Type 1 Radiant Steering"</option>
+					<option>"Type 2 Radiant Steering"</option>
+					<option>"Type 3 Radiant Steering"</option>
+					<option>"Type 4 Radiant Steering"</option>
+					<option>"Bright Cloud Shielding"</option>
+					<option>"Dark Storm Shielding"</option>
+					<option>"Fuel Pod"</option>
+					<option>"Wanderer Ramscoop"</option>
+				</optgroup>
+				<optgroup label="Basic">
+					<option>"Local Map"</option>
+					<option>"Mass Expansion"</option>
+					<option>"Cargo Expansion"</option>
+					<option>"Fuel Pod"</option>
+					<option>"Jump Drive"</option>
+					<option>"Hyperdrive"</option>
+					<option>"Scram Drive"</option>
+				</optgroup>
+			</select>
+			<input id="allOutfitAmount" type="text" placeholder="outfit amount ie 2" data-toggle="tooltip"
+			data-placement="top" title="Add multiple of one outfit with a number or save an outfit name">
+			<button onclick="addAllOutfit()" type="button" class="btn btn-info">Add Selected Outfit</button>
+			<button onclick="deleteSavedOutfits()" type="button" class="btn btn-danger">Delete Saved Outfits</button>
+			<br>
+
+		</div>
+
+		<!-- Start Code Section -->
+		<div id="code-section" class="col-md-3 col-md-offset-2 code">
+
+			<span>ship</span> <span id="cName" contenteditable="true">"name"</span><br>
+			<span>	sprite</span> <span id="cSprite" contenteditable="true">"ship/name"</span><br>
+			<span>	</span><span id="cDisabled" contenteditable="true">"never disabled"</span><br>
+
+			<div class="attributes-section">
+				<span class="att-head">	attributes</span><br>
+				<span>		category</span> <span id="cCategory" contenteditable="true">"Interceptor"</span><br>
+				<span>		"cost"</span> <span id="cCost" contenteditable="true">1</span><br>
+				<span>		"shields"</span> <span id="cShield" contenteditable="true">1</span><br>
+				<span>		"hull"</span> <span id="cHull" contenteditable="true">1</span><br>
+				<span>		"required crew"</span> <span id="cCrew" contenteditable="true">1</span><br>
+				<span>		"automaton"</span> <span id="cAutomaton" contenteditable="true">0</span><br>
+				<span>		"bunks"</span> <span id="cBunks" contenteditable="true">1</span><br>
+				<span>		"mass"</span> <span id="cMass" contenteditable="true">1</span><br>
+				<span>		"drag"</span> <span id="cDrag" contenteditable="true">1</span><br>
+				<span>		"heat dissipation"</span> <span id="cHeat" contenteditable="true">1</span><br>
+				<span>		"fuel capacity"</span> <span id="cFuel" contenteditable="true">1</span><br>
+				<span>		"cargo space"</span> <span id="cCargo" contenteditable="true">1</span><br>
+				<span>		"outfit space"</span> <span id="cOutfit" contenteditable="true">1</span><br>
+				<span>		"weapon capacity"</span> <span id="cWeaponCap" contenteditable="true">1</span><br>
+				<span>		"engine capacity"</span> <span id="cEngineCap" contenteditable="true">1</span><br>
+				<span>		weapon</span><br>
+				<span>			"blast radius"</span> <span id="cBlast" contenteditable="true">1</span><br>
+				<span>			"shield damage"</span> <span id="cShieldDamage" contenteditable="true">1</span><br>
+				<span>			"hull damage"</span> <span id="cHullDamage" contenteditable="true">1</span><br>
+				<span>			"hit force"</span> <span id="cHitForce" contenteditable="true">1</span><br>
+			</div> <!-- Attributes end -->
+
+			<div class="outfits-section">
+				<span class="outfit-head">	outfits</span><br>
+			</div>
+
+			<div class="all-outfit-section">
+				<span id="all-outfit-list" contenteditable="true"></span>
+			</div>
+			<br>
+			<div class="weapon-section">
+				<span id="weapon-list" contenteditable="true"></span>
+			</div>
+			<br>
+
+			<div class="module-section">
+				<span id="module-list" contenteditable="true"></span>
+			</div>
+			<br>
+
+			<div class="engine-section">
+				<span id="engine-list" contenteditable="true"></span>
+			</div>
+			<br>
+
+			<div class="last-section">
+				<span id="position-list" contenteditable="true"></span>
+				<span id="explosion-list" contenteditable="true"></span>
+				<span>	description</span> <span id="cDescription" contenteditable="true">"a generated ship"</span>
+			</div>
+			<br>
+
+		</div> <!-- End Code Section -->
+	</div> <!-- End Row-->
+	<br>
+
+	<footer class="container-fluid">
+		<div class="row">
+			<div class="col-sm-4 footer-left">
+				<h4><a href="https://endless-sky.github.io/">Endless Sky</a> - Ship Generator</h4>
+			</div>
+			<div class="col-sm-4 col-sm-offset-4 footer-right">
+				<a href="http://steamcommunity.com/sharedfiles/filedetails/?id=718279752" target="_blank"><i class="fa fa-steam-square fa-3x" aria-hidden="true"></i></a>
+				<a href="https://github.com/evan153/evan153.github.io" target="_blank"><i class="fa fa-github-square fa-3x" aria-hidden="true"></i></a>
+				<a href="http://steamcommunity.com/sharedfiles/filedetails/?id=690480787" target="_blank"><i class="fa fa-briefcase fa-3x" aria-hidden="true"></i></a>
+				<a href="https://endless-sky.github.io/" target="_blank"><i class="fa fa-space-shuttle fa-3x" aria-hidden="true"></i></a>
+			</div>
+		</div>
+	</footer>
+
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/ship-presets.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+body {
+	background-color: #000;
+	background-image: url("../img/spacebg.jpg");
+}
+
+p {}
+
+h1,
+h2,
+h3,
+h4,
+h6 {
+	color: #fff;
+}
+
+h5 {
+
+}
+
+ol {}
+
+li {
+	
+}
+
+a {}
+
+span {
+	white-space: pre;
+}
+
+#topSection {
+	background-color: #000;
+	color: #fff;
+	margin: 1em;
+	/*height: 5em;*/
+}
+
+.btn {
+	margin: 0.2em;
+}
+
+.c-select {
+	margin: 0.5em;
+}
+
+.input-group {
+	margin: 0.5em;
+}
+/* old style
+.input-group span {
+	font-weight: bold;
+}
+
+input {
+	min-width: 8em;
+}
+*/
+.input-group span{
+	/*display: block;
+	float: left;
+	clear: left;*/
+	width: 150px;
+	text-align: right;
+	font-weight: bold;
+}
+
+
+.input-section {
+	margin-top: 1em;
+}
+
+.code {
+	background-color: #fff;
+	display:block;
+}
+
+.att-head {
+	font-weight: bold;
+}
+
+.outfit-head {
+	font-weight: bold;
+}
+
+option {
+	font-weight: 500;
+}
+
+
+
+label {
+	display:block;
+	color: #fff;
+	font-weight: bold;
+	background-color: #111;
+	margin: 0.1em;
+	width: 26.6em; /* fit text area */
+}
+
+textarea { display:block;}
+
+footer {
+	background-color: #000;
+	height: 100%;
+}
+
+.footer-left {
+	color:white;
+}
+
+.footer-middle {
+	color:white;
+}
+
+.footer-right {
+	color:white;
+}
+
+.fa {
+  font-size: 30px;
+  color: white;
+}
