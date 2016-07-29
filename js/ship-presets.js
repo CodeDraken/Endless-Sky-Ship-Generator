@@ -121,7 +121,6 @@ var savePresetStorage = function() {
 var loadPresetStorage = function() {
 	if(localStorage.getItem('presetList')) { // if was saved before load it
 		presetList = JSON.parse(localStorage.getItem('presetList'));
-		//objects = JSON.parse(localStorage.getItem("savedData")));
 		loadPresetList();
 	}
 };
