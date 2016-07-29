@@ -47,6 +47,10 @@ span {
 .input-group {
 	margin: 0.5em;
 }
+
+select {
+	margin: 0.5em;
+}
 /* old style
 .input-group span {
 	font-weight: bold;

@@ -119,7 +119,8 @@ var randomGen = function() {
 
 	// If tier is bigger than normal make it more random
 	if(tier > 1){
-		outfitMult = Math.round(tier/rand(1,3));
+		//outfitMult = Math.round(tier/rand(1,3)); Varies too much
+		outfitMult = tier;
 	}
 
 	// Generate based on category / Looked at game files and got a min/max

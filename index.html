@@ -5,7 +5,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Ship Generator</title>
+
+	<!-- Normalize -->
+	<link href="css/normalize.css" rel="stylesheet" >
+	<!-- Bootstrap -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- Main Theme -->
 	<link rel="stylesheet" href="css/main.css">
 	<!-- Custom Fonts -->
 	<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -33,6 +38,8 @@
 			<select name="preset-select" id="iPreset" class="preset-select" data-toggle="tooltip" data-placement="top" title="Load a preset">
 
 			</select>
+			<br>
+			<button type="button" id="cyclePresetLists" onclick="rotatePresets()" class="btn btn-primary">Cycle through preset lists</button>
 			<br>
 			<button type="button" id="loadPreset" onclick="insertPreset()" class="btn btn-primary">Insert Selected Preset</button>
 			<button type="button" id="loadPreset" onclick="savePreset()" class="btn btn-primary">Save Ship Preset</button>
