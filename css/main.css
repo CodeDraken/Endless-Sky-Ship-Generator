@@ -126,8 +126,3 @@ footer {
   font-size: 30px;
   color: white;
 }
-
-iframe {
-	min-width: 100%;
-	min-height: 400px;
-}
