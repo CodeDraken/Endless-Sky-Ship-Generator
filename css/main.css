@@ -11,6 +11,7 @@ h3,
 h4,
 h6 {
 	color: #fff;
+	font-weight: bold;
 }
 
 h5 {
@@ -124,4 +125,9 @@ footer {
 .fa {
   font-size: 30px;
   color: white;
+}
+
+iframe {
+	min-width: 100%;
+	min-height: 400px;
 }
